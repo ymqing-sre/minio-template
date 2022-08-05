@@ -125,32 +125,39 @@ func main() {
 			}
 		case "putFile":
 			if bktName != "" && filename != "" {
-				file, err := os.Open(filename)
-				if err != nil {
-					panic(err)
+				input := &s3.HeadBucketInput{
+					Bucket: &bktName,
 				}
-				defer func(file *os.File) {
-					err := file.Close()
+				if utils.BucketExists(context.TODO(), client, input) {
+					file, err := os.Open(filename)
 					if err != nil {
 						panic(err)
 					}
-				}(file)
-				var keyname string
-				if path != "" {
-					keyname = path + "/" + filename
+					defer func(file *os.File) {
+						err := file.Close()
+						if err != nil {
+							panic(err)
+						}
+					}(file)
+					var keyname string
+					if path != "" {
+						keyname = path + "/" + filename
+					} else {
+						keyname = filename
+					}
+					input := &s3.PutObjectInput{
+						Bucket: &bktName,
+						Key:    &keyname,
+						Body:   file,
+					}
+					_, err = utils.PutFile(context.TODO(), client, input)
+					if err != nil {
+						panic(err)
+					}
+					fmt.Println("Upload File " + filename)
 				} else {
-					keyname = filename
+					fmt.Println("Bucket", bktName, "is not founded")
 				}
-				input := &s3.PutObjectInput{
-					Bucket: &bktName,
-					Key:    &keyname,
-					Body:   file,
-				}
-				_, err = utils.PutFile(context.TODO(), client, input)
-				if err != nil {
-					panic(err)
-				}
-				fmt.Println("Upload File " + filename)
 			} else {
 				fmt.Println("You must supply a bucket name (-b BUCKET) and file name (-f FILE)")
 			}
