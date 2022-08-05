@@ -1,0 +1,4 @@
+endpointURL: "http://fs.quanxiang.cloud:30145"
+credentials:
+  accessKey: "minio"
+  secretAccessKey: "Minio123456"
