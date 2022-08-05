@@ -268,6 +268,27 @@ func main() {
 			} else {
 				fmt.Println("You must supply the name of a bucket (-b BUCKET)")
 			}
+		case "putPresignedURL":
+			if bktName != "" && objName != "" {
+				input := &s3.HeadBucketInput{
+					Bucket: &bktName,
+				}
+				if utils.BucketExists(context.TODO(), client, input) {
+					input := &s3.PutObjectInput{
+						Bucket: &bktName,
+						Key:    &objName,
+					}
+					psClient := s3.NewPresignClient(client)
+					res, err := utils.PutPresignedURL(context.TODO(), psClient, input)
+					if err != nil {
+						panic(err)
+					}
+					fmt.Println("The Object Put URL:")
+					fmt.Println(res.URL)
+				}
+			} else {
+				fmt.Println("Bucket", bktName, "is not founded")
+			}
 		case "getPresignedURL":
 			if bktName != "" && objName != "" {
 				// 先判断对象是否存在
@@ -285,7 +306,7 @@ func main() {
 					if err != nil {
 						panic(err)
 					}
-					fmt.Println("The Object URL:")
+					fmt.Println("The Object Get URL:")
 					fmt.Println(res.URL)
 				} else {
 					fmt.Println("Object", objName, "is not found")
@@ -315,7 +336,9 @@ func main() {
 				fmt.Println("You must supply a bucket name (-b BUCKET)")
 			}
 		default:
-			fmt.Println("The action must be one of [listBuckets, createBucket, copyObj, putFile, getFile, listFiles, removeBucket, deleteObj, getPresignedURL, objExists]")
+			fmt.Println("The action must be one of " +
+				"[listBuckets, createBucket, copyObj, putFile, getFile, deleteObj, listFiles, removeBucket," +
+				" putPresignedURL, getPresignedURL, objExists, bktExists]")
 		}
 	}
 }

@@ -40,6 +40,10 @@ func GetPresignedURL(c context.Context, api S3PresignGetObjectAPI, input *s3.Get
 	return api.PresignGetObject(c, input)
 }
 
+func PutPresignedURL(c context.Context, api S3PresignPutObjectAPI, input *s3.PutObjectInput) (*v4.PresignedHTTPRequest, error) {
+	return api.PresignPutObject(c, input)
+}
+
 func ObjectExists(c context.Context, api S3ObjectExistsAPI, input *s3.HeadObjectInput) bool {
 	_, err := api.HeadObject(c, input)
 	if err != nil {

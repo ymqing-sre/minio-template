@@ -27,6 +27,7 @@ Action:
 - deleteObj：删除对象
 - listFiles：列出指定桶中的所有对象
 - removeBucket：删除桶
+- putPresignedURL：上传对象的预签名URL
 - getPresignedURL：获取对象的预签名URL
 - objExists：判断某个桶中的对象是否存在
 - bktExists：判断某个桶是否存在
@@ -81,6 +82,11 @@ OBJECT为对象的KEY值，FILENAME为下载到本地后的文件名。 下载�
 #### 删除对象
 ```shell
 ./mc -a deleteObj -b BUCKET_NAME -o OBJECT
+```
+#### 上传对象的预签名URL
+返回一个上传地址，前端可通过地址直接上传文件。
+```shell
+./mc -a putPresignedURL -b BUCKET_NAME -o OBJECT
 ```
 #### 获取对象的预签名URL
 获取预签名URL后返回一个下载地址，可通过下载地址直接下载文件。
