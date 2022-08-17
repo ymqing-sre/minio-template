@@ -1,4 +1,4 @@
-endpointURL: "http://fs.quanxiang.cloud:30145"
+endpointURL: "http://fs1.cloud.mc:32310"
 credentials:
   accessKey: "minio"
   secretAccessKey: "Minio123456"

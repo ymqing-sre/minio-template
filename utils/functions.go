@@ -16,6 +16,10 @@ func GetAllBuckets(c context.Context, api S3ListBucketsAPI, input *s3.ListBucket
 	return api.ListBuckets(c, input)
 }
 
+func RemoveBucket(c context.Context, api S3DeleteBucketAPI, input *s3.DeleteBucketInput) (*s3.DeleteBucketOutput, error) {
+	return api.DeleteBucket(c, input)
+}
+
 func PutFile(c context.Context, api S3PutObjectAPI, input *s3.PutObjectInput) (*s3.PutObjectOutput, error) {
 	return api.PutObject(c, input)
 }
@@ -26,10 +30,6 @@ func GetFile(c context.Context, api S3GetObjectAPI, input *s3.GetObjectInput) (*
 
 func GetObjects(c context.Context, api S3ListObjectsAPI, input *s3.ListObjectsV2Input) (*s3.ListObjectsV2Output, error) {
 	return api.ListObjectsV2(c, input)
-}
-
-func RemoveBucket(c context.Context, api S3DeleteBucketAPI, input *s3.DeleteBucketInput) (*s3.DeleteBucketOutput, error) {
-	return api.DeleteBucket(c, input)
 }
 
 func DeleteObj(c context.Context, api S3DeleteObjectAPI, input *s3.DeleteObjectInput) (*s3.DeleteObjectOutput, error) {
